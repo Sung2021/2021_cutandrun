@@ -89,3 +89,14 @@ for(group in c('nai','eff','tem','tcm')){
 tmp.normalized %>% head()
 tmp.normalized %>% dim()
 write.csv(tmp.normalized, 'rds/cutandrun/cutandrun.peak.normalized.csv')
+
+
+normalization_factor <- list()
+for(group in c('nai','eff','tem','tcm')){
+  tmp <- raw.value[,grep(group, colnames(raw.value))]
+  tmp.avg <- tmp
+  tmp.avg[,'avg'] <- rowMeans(tmp.avg)
+  normalization_factor[[group]] <- mean(tmp.avg$avg)
+}
+normalization_factor
+
