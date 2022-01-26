@@ -1,0 +1,26 @@
+#####################################
+# setwd('~/Desktop/HMH/')
+library(dplyr)
+library(ggplot2)
+library(reshape)
+
+#################################################################
+########## renormalized on 2022.01.25
+
+## normalized peaks only 
+norm.peak 
+## peaks names X samples matrix
+
+## generated pca result
+pca.tmp <- prcomp(norm.peak,scale. = T)
+
+## And we can use sdev to compute variance explained by each Principal Component.
+## sdev gives the standard deviation of principal component. 
+
+var_explained <- pca.tmp$sdev^2/sum(pca.tmp$sdev^2)
+
+## plot by ggplot
+pca.tmp$rotation %>% as.data.frame() %>% 
+  ggplot(aes(PC1,PC2, shape= substr(rownames(pca.tmp$rotation), 1,8))) + 
+  geom_point(size=3) +labs(x=paste0("PC1: ",round(var_explained[1]*100,1),"%"),
+                     y=paste0("PC2: ",round(var_explained[2]*100,1),"%"))
